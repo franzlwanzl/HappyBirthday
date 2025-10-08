@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Happy Birthday</title>
+  <style>
+    body { text-align: center; background: #fff0f5; font-family: Arial; overflow: hidden; }
+    h1 { font-size: 60px; color: darkred; margin-top: 40px; }
+    img { margin-top: 20px; max-width: 80%; height: auto; }
+
+    #moneyButton {
+      margin-top: 30px;
+      padding: 15px 30px;
+      font-size: 20px;
+      background: green;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: transform 0.2s;
+      position: relative;
+      overflow: hidden;
+    }
+    #moneyButton:active { transform: scale(0.9); }
+
+    /* Explosion-Effekt */
+    .explode {
+      animation: explode 0.4s forwards;
+    }
+    @keyframes explode {
+      0% { transform: scale(1); opacity: 1; }
+      100% { transform: scale(2.5); opacity: 0; }
+    }
+
+    .bill {
+      position: absolute;
+      width: 60px;
+      height: 30px;
+      background: lightgreen;
+      border: 2px solid darkgreen;
+      border-radius: 4px;
+      font-weight: bold;
+      color: darkgreen;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: fly 2.5s forwards;
+      z-index: 10;
+    }
+
+    /* Konfetti fliegt in alle Richtungen */
+    @keyframes fly {
+      0% { opacity: 1; transform: translate(0,0) rotate(0deg) scale(1); }
+      100% { opacity: 0; transform: translate(var(--x), var(--y)) rotate(1080deg) scale(0.5); }
+    }
+
+    #result {
+      margin-top: 40px;
+      display: none;
+    }
+    #result a {
+      text-decoration: none;
+      color: darkgreen;
+      font-size: 80px;
+      font-weight: bold;
+    }
+    #result a:hover {
+      color: green;
+      text-shadow: 0 0 10px lime;
+    }
+  </style>
+</head>
+<body>
+  <h1>Happy Birthday 🎉🎂</h1>
+  <img src="/bild.png" alt="Geburtstagsbild">
+  <br>
+  <button id="moneyButton">Überraschung!</button>
+  <div id="result">
+    <a href="https://bambulab.com/de-de" target="_blank">30 €</a>
+  </div>
+
+  <!-- Sound -->
+  <audio id="boomSound" src="/explosion.mp3" preload="auto"></audio>
+
+  <script>
+    const button = document.getElementById("moneyButton");
+    const result = document.getElementById("result");
+    const boomSound = document.getElementById("boomSound");
+
+    button.addEventListener("click", () => {
+      // Sound abspielen
+      boomSound.currentTime = 0;
+      boomSound.play();
+
+      // Button Explosion sofort starten
+      button.classList.add("explode");
+
+      // Geldscheine sofort erzeugen
+      for (let i = 0; i < 25; i++) {
+        const bill = document.createElement("div");
+        bill.className = "bill";
+        bill.innerText = "€";
+
+        // Zufällige Flugrichtung
+        const angle = Math.random() * 2 * Math.PI;
+        const distance = 300 + Math.random() * 200;
+        const x = Math.cos(angle) * distance + "px";
+        const y = Math.sin(angle) * distance + "px";
+
+        bill.style.setProperty("--x", x);
+        bill.style.setProperty("--y", y);
+
+        bill.style.left = (window.innerWidth/2) + "px";
+        bill.style.top = "250px";
+        bill.style.animationDelay = (Math.random()*0.2) + "s";
+
+        document.body.appendChild(bill);
+
+        bill.addEventListener("animationend", () => bill.remove());
+      }
+
+      // Nach kurzer Zeit Button ausblenden und Ergebnis zeigen
+      setTimeout(() => {
+        button.style.display = "none";
+        result.style.display = "block";
+      }, 400);
+    });
+  </script>
+</body>
+</html>
