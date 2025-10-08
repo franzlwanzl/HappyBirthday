@@ -1,8 +1,8 @@
 #include <ESP8266WiFi.h>
 #include <LittleFS.h>
 
-const char* ssid = "Vodafone-F194";
-const char* password = "4PH64amtaTmn6xtp";
+const char* ssid = "WLAN Kabel";
+const char* password = "57002120109202250682";
 
 WiFiServer server(80);
 
